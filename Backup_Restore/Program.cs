@@ -16,14 +16,15 @@ namespace Backup_Restore
         /// The main entry point for the application.
         /// </summary>
         // public static SqlConnection conn = new SqlConnection();
-        //  public static String connstr;
+        //  public static String connStr;
         public static SqlDataAdapter da;
         public static SqlConnection conn = new SqlConnection();
 
         public static FormMain formMain;
         public static loginForm LoginForm;
-        public static string connstr = "";
-       // public static SqlConnection connection;     //Connection biến dùng kết nối về db 
+        public static string connStr = "";
+        // public static SqlConnection connection;
+        //Connection biến dùng kết nối về db 
         public static SqlDataReader myreader;
         public static String serverName = "";
         public static String username = "";
@@ -43,9 +44,9 @@ namespace Backup_Restore
                 Program.conn.Close();
             try
             {
-                Program.connstr = "Data Source=" + Program.serverName + ";User ID=" + Program.username + ";password=" + Program.passWord;
-                //Program.conn.ConnectionString = connstr;
-                Program.conn = new SqlConnection(Program.connstr);
+                Program.connStr = "Data Source=" + Program.serverName + ";User ID=" + Program.username + ";password=" + Program.passWord;
+                //Program.conn.ConnectionString = connStr;
+                Program.conn = new SqlConnection(Program.connStr);
                 Program.conn.Open();
                 return 1;
             }

@@ -45,7 +45,7 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnsao = new DevExpress.XtraBars.BarButtonItem();
             this.pnelCSDL = new System.Windows.Forms.Panel();
-            this.databasesGridControl = new DevExpress.XtraGrid.GridControl();
+            this.gcDatabase = new DevExpress.XtraGrid.GridControl();
             this.bdsDatabase = new System.Windows.Forms.BindingSource(this.components);
             this.DS = new Backup_Restore.DS();
             this.grvDatabase = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -80,7 +80,7 @@
             this.dtptTimeStop = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.pnelCSDL.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.databasesGridControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).BeginInit();
@@ -241,7 +241,7 @@
             // 
             // pnelCSDL
             // 
-            this.pnelCSDL.Controls.Add(this.databasesGridControl);
+            this.pnelCSDL.Controls.Add(this.gcDatabase);
             this.pnelCSDL.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnelCSDL.Location = new System.Drawing.Point(0, 70);
             this.pnelCSDL.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -249,21 +249,20 @@
             this.pnelCSDL.Size = new System.Drawing.Size(300, 733);
             this.pnelCSDL.TabIndex = 4;
             // 
-            // databasesGridControl
+            // gcDatabase
             // 
-            this.databasesGridControl.DataSource = this.bdsDatabase;
-            this.databasesGridControl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.databasesGridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.databasesGridControl.Location = new System.Drawing.Point(0, 0);
-            this.databasesGridControl.MainView = this.grvDatabase;
-            this.databasesGridControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.databasesGridControl.MenuManager = this.barManager1;
-            this.databasesGridControl.Name = "databasesGridControl";
-            this.databasesGridControl.Size = new System.Drawing.Size(297, 733);
-            this.databasesGridControl.TabIndex = 0;
-            this.databasesGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gcDatabase.Dock = System.Windows.Forms.DockStyle.Left;
+            this.gcDatabase.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gcDatabase.Location = new System.Drawing.Point(0, 0);
+            this.gcDatabase.MainView = this.grvDatabase;
+            this.gcDatabase.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gcDatabase.MenuManager = this.barManager1;
+            this.gcDatabase.Name = "gcDatabase";
+            this.gcDatabase.Size = new System.Drawing.Size(297, 733);
+            this.gcDatabase.TabIndex = 0;
+            this.gcDatabase.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grvDatabase});
-            this.databasesGridControl.Click += new System.EventHandler(this.databasesGridControl_Click);
+            this.gcDatabase.Click += new System.EventHandler(this.databasesGridControl_Click);
             // 
             // bdsDatabase
             // 
@@ -281,14 +280,14 @@
             this.colname,
             this.coldatabase_id});
             this.grvDatabase.DetailHeight = 431;
-            this.grvDatabase.GridControl = this.databasesGridControl;
+            this.grvDatabase.GridControl = this.gcDatabase;
             this.grvDatabase.Name = "grvDatabase";
             this.grvDatabase.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.grvDatabase_RowClick);
             // 
             // colname
             // 
             this.colname.Caption = "Danh sách cơ sở dữ liệu";
-            this.colname.FieldName = "name";
+            this.colname.FieldName = "Name";
             this.colname.MinWidth = 23;
             this.colname.Name = "colname";
             this.colname.OptionsColumn.AllowEdit = false;
@@ -299,7 +298,7 @@
             // 
             // coldatabase_id
             // 
-            this.coldatabase_id.FieldName = "database_id";
+            this.coldatabase_id.FieldName = "Database_Id";
             this.coldatabase_id.MinWidth = 23;
             this.coldatabase_id.Name = "coldatabase_id";
             this.coldatabase_id.Width = 87;
@@ -595,7 +594,7 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.pnelCSDL.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.databasesGridControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).EndInit();
@@ -633,7 +632,7 @@
         private DS DS;
         private DSTableAdapters.databasesTableAdapter databasesTableAdapter;
         private DSTableAdapters.TableAdapterManager tableAdapterManager;
-        private DevExpress.XtraGrid.GridControl databasesGridControl;
+        private DevExpress.XtraGrid.GridControl gcDatabase;
         private DevExpress.XtraGrid.Views.Grid.GridView grvDatabase;
         private DevExpress.XtraGrid.Columns.GridColumn colname;
         private DevExpress.XtraGrid.Columns.GridColumn coldatabase_id;

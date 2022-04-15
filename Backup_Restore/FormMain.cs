@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using System.Data.SqlClient;
 using System.IO;
+using Backup_Restore.Repositoies;
+using Backup_Restore.Models;
 
 namespace Backup_Restore
 {
@@ -24,20 +26,26 @@ namespace Backup_Restore
         String strRestore;
         //   DateTime timeDate;
         String strFullPathDevice;
+        DatabaseRepository databaseRepository;
         public FormMain()
         {
             InitializeComponent();
+            databaseRepository = new DatabaseRepository();
+
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'DS.backup_devices' table. You can move, or remove it, as needed.
-            this.dataTable1TableAdapter.Connection.ConnectionString = Program.connstr;
-            this.databasesTableAdapter.Connection.ConnectionString = Program.connstr;
-            this.backup_devicesTableAdapter.Connection.ConnectionString = Program.connstr;
-            this.backup_devicesTableAdapter.Fill(this.DS.backup_devices);         
-           this.databasesTableAdapter.Fill(this.DS.databases);
-            Program.Db = ((DataRowView)bdsDatabase[bdsDatabase.Position])["name"].ToString().Trim();
+            this.dataTable1TableAdapter.Connection.ConnectionString = Program.connStr;
+            this.databasesTableAdapter.Connection.ConnectionString = Program.connStr;
+            this.backup_devicesTableAdapter.Connection.ConnectionString = Program.connStr;
+            this.backup_devicesTableAdapter.Fill(this.DS.backup_devices);
+
+            gcDatabase.DataSource = databaseRepository.GetDatabases();
+
+            Program.Db = ((DatabaseModel)grvDatabase.GetRow(grvDatabase.FocusedRowHandle)).Name;
+
             this.txtTenDB.Text = Program.Db;
             this.dataTable1TableAdapter.Fill(this.DS.DataTable1, Program.Db);
         }
@@ -204,7 +212,7 @@ namespace Backup_Restore
             if (Program.Db.Trim() == "") return;
             try
             {
-                this.dataTable1TableAdapter.Connection.ConnectionString = Program.connstr;
+                this.dataTable1TableAdapter.Connection.ConnectionString = Program.connStr;
                 this.dataTable1TableAdapter.Fill(this.DS.DataTable1, Program.Db);
                 if (bdsBackup.Count == 0)
                     txtSoLuongBackup.Text = "0";
@@ -245,9 +253,9 @@ namespace Backup_Restore
                 this.btnPhucHoi.Enabled = true;
                 this.btnThamsotime.Enabled = true;
             }
-            this.dataTable1TableAdapter.Connection.ConnectionString = Program.connstr;
+            this.dataTable1TableAdapter.Connection.ConnectionString = Program.connStr;
             this.dataTable1TableAdapter.Fill(this.DS.DataTable1, Program.Db);
-            this.backup_devicesTableAdapter.Connection.ConnectionString = Program.connstr;
+            this.backup_devicesTableAdapter.Connection.ConnectionString = Program.connStr;
 
             LoadBanSaoLuu();
 
@@ -328,7 +336,7 @@ namespace Backup_Restore
             {
                 strRestore += "RESTORE DATABASE " + txtTenDB.Text + " FROM " + tenDevice + " WITH FILE= " + soLuongBanSaoLuu + ",REPLACE " + "ALTER DATABASE " + Program.Db + " SET MULTI_USER";
              //   MessageBox.Show(strRestore, "", MessageBoxButtons.OK);
-                err = Program.ExecSqlNonQuery(strRestore, Program.connstr, "lỗi phục hồi cơ sở dữ liệu");
+                err = Program.ExecSqlNonQuery(strRestore, Program.connStr, "lỗi phục hồi cơ sở dữ liệu");
                 if (err == 0)
                 {
                     int i;
@@ -388,7 +396,7 @@ namespace Backup_Restore
                                 + "RESTORE DATABASE " + Program.Db + " FROM DISK='" + strFullPathBackLog + "' WITH STOPAT='" + dt
                                 + "'\n ALTER DATABASE " + Program.Db + " SET MULTI_USER";
                             MessageBox.Show(" " + strRestore, "", MessageBoxButtons.OK);
-                            int Err = Program.ExecSqlNonQuery(strRestore, Program.connstr, "lỗi phục hồi cơ sở dữ liệu");
+                            int Err = Program.ExecSqlNonQuery(strRestore, Program.connStr, "lỗi phục hồi cơ sở dữ liệu");
                             if (Err == 0)
                             {
                                 int i;
@@ -433,7 +441,7 @@ namespace Backup_Restore
                    + "RESTORE DATABASE " + Program.Db + " FROM DISK='" + strFullPathDevice + "' WITH NORECOVERY , REPLACE\n "
                     + "RESTORE DATABASE " + Program.Db + " FROM DISK='" + strFullPathBackLog + "' WITH STOPAT='" + dtStopAt
                     + "'\n ALTER DATABASE " + Program.Db + " SET MULTI_USER";
-                int checkErr = Program.ExecSqlNonQuery(strRestore, Program.connstr, "lỗi phục hồi cơ sở dữ liệu");
+                int checkErr = Program.ExecSqlNonQuery(strRestore, Program.connStr, "lỗi phục hồi cơ sở dữ liệu");
                 if (checkErr == 0)
                 {
                     int i;
