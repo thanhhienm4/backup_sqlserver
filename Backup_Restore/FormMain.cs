@@ -18,7 +18,7 @@ namespace Backup_Restore
     public partial class FormMain : DevExpress.XtraEditors.XtraForm
     {
 
-        String tenDevice;
+        String nameDevice;
         //  String tenDeviceBackLog;
 
         //   String timeStop;
@@ -27,10 +27,15 @@ namespace Backup_Restore
         //   DateTime timeDate;
         String strFullPathDevice;
         DatabaseRepository databaseRepository;
+        DeviceRepository deviceRepository;
+        BackupReposity backupReposity;
+
         public FormMain()
         {
             InitializeComponent();
             databaseRepository = new DatabaseRepository();
+            deviceRepository = new DeviceRepository();
+            backupReposity = new BackupReposity();
 
         }
 
@@ -87,17 +92,16 @@ namespace Backup_Restore
         private void databasesGridControl_Click(object sender, EventArgs e)
         {
         }
-        private void taoDevice()
+        private void createDevice()
         {
-            tenDevice = "DEVICE_" + Program.Db;
-            strFullPathDevice = Program.strDefaultPath + tenDevice + ".BAK";
-
-            String query = "USE master\n EXEC sp_addumpdevice '" + Program.device_type + "', '" + tenDevice + "','" + strFullPathDevice + "'";
+            nameDevice = "DEVICE_" + Program.Db;
+            strFullPathDevice = Program.strDefaultPath + nameDevice + ".BAK";
+           
             try
             {
 
-                Program.myreader = Program.ExecSqlDataReader(query);
-                if (Program.myreader != null)
+                int res = deviceRepository.CreateDevice(Program.device_type, nameDevice, strFullPathDevice);
+                if (res > 0)
                 {
                     int i;
                     this.PrgLoad.Visible = true;
@@ -116,10 +120,9 @@ namespace Backup_Restore
 
                     PrgLoad.Visible = false;
                     MessageBox.Show(" Tạo Device thành công!", "", MessageBoxButtons.OK);
-                    this.backup_devicesTableAdapter.Fill(this.DS.backup_devices);
                     btnDevice.Enabled = false;
                     btnSaoLuuAd.Enabled = true;
-                    txtTenDevice.Text = tenDevice;
+                    txtTenDevice.Text = nameDevice;
                 }
                 else MessageBox.Show(" Tạo Device thất bại!", "", MessageBoxButtons.OK);
             }
@@ -137,61 +140,18 @@ namespace Backup_Restore
         {
             if (Directory.Exists(Program.strDefaultPath) == true)
             {
-                taoDevice();
+                createDevice();
             }
             else
             {
-                OpenFileDialog folderBrowser = new OpenFileDialog();
-                folderBrowser.ValidateNames = false;
-                folderBrowser.CheckFileExists = false;
-                folderBrowser.CheckPathExists = true;
-                folderBrowser.FileName = "Folder Selection.";
+                FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+                folderBrowser.SelectedPath = Program.strDefaultPathNew;
+
                 if (folderBrowser.ShowDialog() == DialogResult.OK)
                 {
-                    string folderPath = Path.GetDirectoryName(folderBrowser.FileName);
-                    Program.strDefaultPathNew = folderPath + "\\";
-                    strFullPathDevice = Program.strDefaultPathNew + tenDevice + ".BAK";
-
-                    String query = "USE master\n EXEC sp_addumpdevice '" + Program.device_type + "', '" + tenDevice + "','" + strFullPathDevice + "'";
-                    try
-                    {
-
-                        Program.myreader = Program.ExecSqlDataReader(query);
-                        if (Program.myreader != null)
-                        {
-
-                            int i;
-                            this.PrgLoad.Visible = true;
-                            this.PrgLoad.Minimum = 0;
-                            this.PrgLoad.Maximum = 100;
-                            this.PrgLoad.Step = 10;
-
-                            for (i = this.PrgLoad.Minimum; i <= this.PrgLoad.Maximum; i++)
-                            {
-                                PrgLoad.Value = i;
-
-                                PrgLoad.PerformStep();
-                                Thread.Sleep(10);
-
-                            }
-
-                            PrgLoad.Visible = false;
-                            MessageBox.Show(" Tạo Device thành công!", "", MessageBoxButtons.OK);
-                            this.backup_devicesTableAdapter.Fill(this.DS.backup_devices);
-                            btnDevice.Enabled = false;
-                            btnSaoLuuAd.Enabled = true;
-                            txtTenDevice.Text = tenDevice;
-                        }
-                        else MessageBox.Show(" Tạo Device thất bại!", "", MessageBoxButtons.OK);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error" + ex, "!", MessageBoxButtons.OK);
-                        return;
-                    }
-
-                    Program.conn.Close();
-
+                    Program.strDefaultPathNew = folderBrowser.SelectedPath + "\\";
+                    strFullPathDevice = Program.strDefaultPathNew + nameDevice + ".BAK";
+                    createDevice();
                 }
             }
 
@@ -207,39 +167,25 @@ namespace Backup_Restore
         private void btnSaoLuu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
         }
-        private void LoadBanSaoLuu()
+
+        private void LoadBackup()
         {
             if (Program.Db.Trim() == "") return;
-            try
-            {
-                this.dataTable1TableAdapter.Connection.ConnectionString = Program.connStr;
-                this.dataTable1TableAdapter.Fill(this.DS.DataTable1, Program.Db);
-                if (bdsBackup.Count == 0)
-                    txtSoLuongBackup.Text = "0";
-                else
-                {
-                    soLuongBanSaoLuu = int.Parse(((DataRowView)bdsBackup[0])["position"].ToString());
-
-                    txtSoLuongBackup.Text = soLuongBanSaoLuu.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-            }
+            var backups = backupReposity.GetBackupByName(Program.Db);
+            gcBackup.DataSource = backups;
+            txtSoLuongBackup.Text = backups.Count.ToString();
         }
+
         private void grvDatabase_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
         {
-            //  this.dataTable1TableAdapter.Fill(this.DS.DataTable1, dBNAMEToolStripTextBox.Text);
-            // txtSoLuongBackup.Text = grvBackup.RowCount.ToString();
-
-            Program.Db = ((DataRowView)bdsDatabase[bdsDatabase.Position])["name"].ToString().Trim();
+            Program.Db = ((DatabaseModel)grvDatabase.GetRow(grvDatabase.FocusedRowHandle)).Name;
+            
             txtTenDB.Text = Program.Db;
-            tenDevice = "DEVICE_" + Program.Db;
-            strFullPathDevice = Program.strDefaultPath + tenDevice + ".BAK";
-            int checkTrungDevice = bdsBackup_device.Find("name", tenDevice);
+            nameDevice = "DEVICE_" + Program.Db;
+            strFullPathDevice = Program.strDefaultPath + nameDevice + ".BAK";
+            DeviceModel device = deviceRepository.GetDevices().Find(x => x.Name == nameDevice);
            // MessageBox.Show(" check device" + checkTrungDevice,"", MessageBoxButtons.OK);
-            if (checkTrungDevice == -1)
+            if (device == null)
             {
                 this.txtTenDevice.Text = "Chưa có Device";
                 this.btnDevice.Enabled = true;
@@ -247,7 +193,7 @@ namespace Backup_Restore
             }
             else
             {
-                this.txtTenDevice.Text = ((DataRowView)bdsBackup_device[checkTrungDevice])["name"].ToString().Trim();
+                this.txtTenDevice.Text = device.Name;
                 this.btnDevice.Enabled = false;
                 this.btnSaoLuuAd.Enabled = true;
                 this.btnPhucHoi.Enabled = true;
@@ -257,7 +203,7 @@ namespace Backup_Restore
             this.dataTable1TableAdapter.Fill(this.DS.DataTable1, Program.Db);
             this.backup_devicesTableAdapter.Connection.ConnectionString = Program.connStr;
 
-            LoadBanSaoLuu();
+            LoadBackup();
 
         }
 
@@ -272,9 +218,9 @@ namespace Backup_Restore
         private void btnSaoLuuAd_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
 
-            if (Program.Db.Trim() == "" || tenDevice == "") return;
+            if (Program.Db.Trim() == "" || nameDevice == "") return;
 
-            String strBackup = "BACKUP DATABASE " + Program.Db + " TO " + tenDevice;
+            String strBackup = "BACKUP DATABASE " + Program.Db + " TO " + nameDevice;
             if (ckiNit.Checked == true)
             {
                 if (MessageBox.Show("Bạn có muốn xóa các sao lưu cũ ?", "Xác nhận", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -311,7 +257,7 @@ namespace Backup_Restore
                 return;
             }
             Program.conn.Close();
-            LoadBanSaoLuu();
+            LoadBackup();
 
         }
 
@@ -330,11 +276,11 @@ namespace Backup_Restore
             }
             if (Program.conn != null && Program.conn.State == ConnectionState.Open)
                 Program.conn.Close(); // đóng kết nối 
-            if (txtTenDB.Text.Trim() == "" || tenDevice == "") return;
+            if (txtTenDB.Text.Trim() == "" || nameDevice == "") return;
             strRestore = "ALTER DATABASE " + txtTenDB.Text + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE " + "USE tempdb ";
             if (btnThamsotime.Checked == false)
             {
-                strRestore += "RESTORE DATABASE " + txtTenDB.Text + " FROM " + tenDevice + " WITH FILE= " + soLuongBanSaoLuu + ",REPLACE " + "ALTER DATABASE " + Program.Db + " SET MULTI_USER";
+                strRestore += "RESTORE DATABASE " + txtTenDB.Text + " FROM " + nameDevice + " WITH FILE= " + soLuongBanSaoLuu + ",REPLACE " + "ALTER DATABASE " + Program.Db + " SET MULTI_USER";
              //   MessageBox.Show(strRestore, "", MessageBoxButtons.OK);
                 err = Program.ExecSqlNonQuery(strRestore, Program.connStr, "lỗi phục hồi cơ sở dữ liệu");
                 if (err == 0)
@@ -390,7 +336,7 @@ namespace Backup_Restore
                             string folderPath = Path.GetDirectoryName(folderBrowser.FileName);
                             Program.strDefaultPathNew = folderPath + "\\";
                             String strFullPathBackLog = Program.strDefaultPathNew + Program.Db + ".TRN";
-                            String pathBack = Program.strDefaultPathNew + tenDevice + ".bak";
+                            String pathBack = Program.strDefaultPathNew + nameDevice + ".bak";
                             strRestore += "BACKUP LOG " + Program.Db + " TO DISK='" + strFullPathBackLog + "' WITH INIT\n "
                                + "RESTORE DATABASE " + Program.Db + " FROM DISK='" + pathBack + "' WITH NORECOVERY , REPLACE\n "
                                 + "RESTORE DATABASE " + Program.Db + " FROM DISK='" + strFullPathBackLog + "' WITH STOPAT='" + dt

@@ -46,11 +46,11 @@
             this.btnsao = new DevExpress.XtraBars.BarButtonItem();
             this.pnelCSDL = new System.Windows.Forms.Panel();
             this.gcDatabase = new DevExpress.XtraGrid.GridControl();
-            this.bdsDatabase = new System.Windows.Forms.BindingSource(this.components);
-            this.DS = new Backup_Restore.DS();
             this.grvDatabase = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colname = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coldatabase_id = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.bdsDatabase = new System.Windows.Forms.BindingSource(this.components);
+            this.DS = new Backup_Restore.DS();
             this.databasesTableAdapter = new Backup_Restore.DSTableAdapters.databasesTableAdapter();
             this.tableAdapterManager = new Backup_Restore.DSTableAdapters.TableAdapterManager();
             this.bdsBackup = new System.Windows.Forms.BindingSource(this.components);
@@ -62,7 +62,7 @@
             this.txtSoLuongBackup = new System.Windows.Forms.ToolStripTextBox();
             this.lblDevice = new System.Windows.Forms.ToolStripLabel();
             this.txtTenDevice = new System.Windows.Forms.ToolStripTextBox();
-            this.dataTable1GridControl = new DevExpress.XtraGrid.GridControl();
+            this.gcBackup = new DevExpress.XtraGrid.GridControl();
             this.grvBackup = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colposition = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colname1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -81,12 +81,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.pnelCSDL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DS)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsBackup)).BeginInit();
             this.fillToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable1GridControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcBackup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvBackup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsBackup_device)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Prg.Properties)).BeginInit();
@@ -264,16 +264,6 @@
             this.grvDatabase});
             this.gcDatabase.Click += new System.EventHandler(this.databasesGridControl_Click);
             // 
-            // bdsDatabase
-            // 
-            this.bdsDatabase.DataMember = "databases";
-            this.bdsDatabase.DataSource = this.DS;
-            // 
-            // DS
-            // 
-            this.DS.DataSetName = "DS";
-            this.DS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // grvDatabase
             // 
             this.grvDatabase.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
@@ -302,6 +292,16 @@
             this.coldatabase_id.MinWidth = 23;
             this.coldatabase_id.Name = "coldatabase_id";
             this.coldatabase_id.Width = 87;
+            // 
+            // bdsDatabase
+            // 
+            this.bdsDatabase.DataMember = "databases";
+            this.bdsDatabase.DataSource = this.DS;
+            // 
+            // DS
+            // 
+            this.DS.DataSetName = "DS";
+            this.DS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // databasesTableAdapter
             // 
@@ -380,21 +380,21 @@
             this.txtTenDevice.Name = "txtTenDevice";
             this.txtTenDevice.Size = new System.Drawing.Size(186, 27);
             // 
-            // dataTable1GridControl
+            // gcBackup
             // 
-            this.dataTable1GridControl.DataSource = this.bdsBackup;
-            this.dataTable1GridControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dataTable1GridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dataTable1GridControl.Location = new System.Drawing.Point(300, 97);
-            this.dataTable1GridControl.MainView = this.grvBackup;
-            this.dataTable1GridControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.dataTable1GridControl.MenuManager = this.barManager1;
-            this.dataTable1GridControl.Name = "dataTable1GridControl";
-            this.dataTable1GridControl.Size = new System.Drawing.Size(688, 274);
-            this.dataTable1GridControl.TabIndex = 9;
-            this.dataTable1GridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gcBackup.DataSource = this.bdsBackup;
+            this.gcBackup.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gcBackup.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gcBackup.Location = new System.Drawing.Point(300, 97);
+            this.gcBackup.MainView = this.grvBackup;
+            this.gcBackup.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.gcBackup.MenuManager = this.barManager1;
+            this.gcBackup.Name = "gcBackup";
+            this.gcBackup.Size = new System.Drawing.Size(688, 274);
+            this.gcBackup.TabIndex = 9;
+            this.gcBackup.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grvBackup});
-            this.dataTable1GridControl.Click += new System.EventHandler(this.dataTable1GridControl_Click);
+            this.gcBackup.Click += new System.EventHandler(this.dataTable1GridControl_Click);
             // 
             // grvBackup
             // 
@@ -404,14 +404,14 @@
             this.colbackup_start_date,
             this.coluser_name});
             this.grvBackup.DetailHeight = 431;
-            this.grvBackup.GridControl = this.dataTable1GridControl;
+            this.grvBackup.GridControl = this.gcBackup;
             this.grvBackup.Name = "grvBackup";
             this.grvBackup.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.grvBackup_RowClick);
             // 
             // colposition
             // 
             this.colposition.Caption = "Thứ tự";
-            this.colposition.FieldName = "position";
+            this.colposition.FieldName = "Position";
             this.colposition.MinWidth = 23;
             this.colposition.Name = "colposition";
             this.colposition.OptionsColumn.AllowEdit = false;
@@ -423,7 +423,7 @@
             // colname1
             // 
             this.colname1.Caption = "Tên";
-            this.colname1.FieldName = "name";
+            this.colname1.FieldName = "Name";
             this.colname1.MinWidth = 23;
             this.colname1.Name = "colname1";
             this.colname1.OptionsColumn.AllowEdit = false;
@@ -437,7 +437,7 @@
             this.colbackup_start_date.Caption = "Thời gian";
             this.colbackup_start_date.DisplayFormat.FormatString = "yyyy-MM-dd HH:mm:ss";
             this.colbackup_start_date.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            this.colbackup_start_date.FieldName = "backup_start_date";
+            this.colbackup_start_date.FieldName = "Backup_Start_Date";
             this.colbackup_start_date.MinWidth = 23;
             this.colbackup_start_date.Name = "colbackup_start_date";
             this.colbackup_start_date.OptionsColumn.AllowEdit = false;
@@ -448,7 +448,7 @@
             // coluser_name
             // 
             this.coluser_name.Caption = "Tên User";
-            this.coluser_name.FieldName = "user_name";
+            this.coluser_name.FieldName = "User_Name";
             this.coluser_name.MinWidth = 23;
             this.coluser_name.Name = "coluser_name";
             this.coluser_name.OptionsColumn.AllowEdit = false;
@@ -576,7 +576,7 @@
             this.Controls.Add(this.lblinfo);
             this.Controls.Add(this.PrgLoad);
             this.Controls.Add(this.ckiNit);
-            this.Controls.Add(this.dataTable1GridControl);
+            this.Controls.Add(this.gcBackup);
             this.Controls.Add(this.fillToolStrip);
             this.Controls.Add(this.pnelCSDL);
             this.Controls.Add(this.Prg);
@@ -595,13 +595,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.pnelCSDL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DS)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsBackup)).EndInit();
             this.fillToolStrip.ResumeLayout(false);
             this.fillToolStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataTable1GridControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gcBackup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvBackup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bdsBackup_device)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Prg.Properties)).EndInit();
@@ -642,7 +642,7 @@
         private System.Windows.Forms.ToolStripButton fillToolStripButton;
         private System.Windows.Forms.BindingSource bdsBackup;
         private DSTableAdapters.DataTable1TableAdapter dataTable1TableAdapter;
-        private DevExpress.XtraGrid.GridControl dataTable1GridControl;
+        private DevExpress.XtraGrid.GridControl gcBackup;
         private DevExpress.XtraGrid.Views.Grid.GridView grvBackup;
         private DevExpress.XtraGrid.Columns.GridColumn colposition;
         private DevExpress.XtraGrid.Columns.GridColumn colname1;
