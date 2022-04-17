@@ -30,14 +30,13 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
-            this.btnSaoLuuAd = new DevExpress.XtraBars.BarButtonItem();
-            this.btnPhucHoi = new DevExpress.XtraBars.BarButtonItem();
-            this.btnThamsotime = new DevExpress.XtraBars.BarCheckItem();
+            this.btnBackUpAd = new DevExpress.XtraBars.BarButtonItem();
+            this.btnRestore = new DevExpress.XtraBars.BarButtonItem();
+            this.btnTimeParam = new DevExpress.XtraBars.BarCheckItem();
             this.btnDevice = new DevExpress.XtraBars.BarButtonItem();
-            this.btnThoat = new DevExpress.XtraBars.BarButtonItem();
+            this.btnExit = new DevExpress.XtraBars.BarButtonItem();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -49,19 +48,13 @@
             this.grvDatabase = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colname = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coldatabase_id = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.bdsDatabase = new System.Windows.Forms.BindingSource(this.components);
-            this.DS = new Backup_Restore.DS();
-            this.databasesTableAdapter = new Backup_Restore.DSTableAdapters.databasesTableAdapter();
-            this.tableAdapterManager = new Backup_Restore.DSTableAdapters.TableAdapterManager();
-            this.bdsBackup = new System.Windows.Forms.BindingSource(this.components);
-            this.dataTable1TableAdapter = new Backup_Restore.DSTableAdapters.DataTable1TableAdapter();
             this.fillToolStrip = new System.Windows.Forms.ToolStrip();
             this.dBNAMEToolStripLabel = new System.Windows.Forms.ToolStripLabel();
-            this.txtTenDB = new System.Windows.Forms.ToolStripTextBox();
+            this.txtNameDB = new System.Windows.Forms.ToolStripTextBox();
             this.fillToolStripButton = new System.Windows.Forms.ToolStripButton();
-            this.txtSoLuongBackup = new System.Windows.Forms.ToolStripTextBox();
+            this.txtCountBackup = new System.Windows.Forms.ToolStripTextBox();
             this.lblDevice = new System.Windows.Forms.ToolStripLabel();
-            this.txtTenDevice = new System.Windows.Forms.ToolStripTextBox();
+            this.txtNameDevice = new System.Windows.Forms.ToolStripTextBox();
             this.gcBackup = new DevExpress.XtraGrid.GridControl();
             this.grvBackup = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.colposition = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -69,34 +62,23 @@
             this.colbackup_start_date = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coluser_name = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ckiNit = new System.Windows.Forms.CheckBox();
-            this.bdsBackup_device = new System.Windows.Forms.BindingSource(this.components);
-            this.backup_devicesTableAdapter = new Backup_Restore.DSTableAdapters.backup_devicesTableAdapter();
             this.Prg = new DevExpress.XtraEditors.MarqueeProgressBarControl();
             this.marqueeProgressBarControl1 = new DevExpress.XtraEditors.ColorEdit();
             this.PrgLoad = new System.Windows.Forms.ProgressBar();
             this.lblinfo = new System.Windows.Forms.Label();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
-            this.txtInfoPhucHoi = new System.Windows.Forms.TextBox();
+            this.txtInfoRestore = new System.Windows.Forms.TextBox();
             this.dtptTimeStop = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.pnelCSDL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DS)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsBackup)).BeginInit();
             this.fillToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvBackup)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsBackup_device)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Prg.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.marqueeProgressBarControl1.Properties)).BeginInit();
             this.SuspendLayout();
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 2000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // barManager1
             // 
@@ -109,11 +91,11 @@
             this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.btnSaoLuuAd,
-            this.btnPhucHoi,
-            this.btnThamsotime,
+            this.btnBackUpAd,
+            this.btnRestore,
+            this.btnTimeParam,
             this.btnDevice,
-            this.btnThoat,
+            this.btnExit,
             this.btnsao});
             this.barManager1.MaxItemId = 6;
             this.barManager1.StatusBar = this.bar3;
@@ -125,40 +107,40 @@
             this.bar1.DockRow = 0;
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(((DevExpress.XtraBars.BarLinkUserDefines)((DevExpress.XtraBars.BarLinkUserDefines.Caption | DevExpress.XtraBars.BarLinkUserDefines.PaintStyle))), this.btnSaoLuuAd, "Sao Lưu", false, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnPhucHoi, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnThamsotime, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(((DevExpress.XtraBars.BarLinkUserDefines)((DevExpress.XtraBars.BarLinkUserDefines.Caption | DevExpress.XtraBars.BarLinkUserDefines.PaintStyle))), this.btnBackUpAd, "Sao Lưu", false, true, true, 0, null, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnRestore, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnTimeParam, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnDevice, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
-            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnThoat, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnExit, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
             this.bar1.Text = "Tools";
             // 
-            // btnSaoLuuAd
+            // btnBackUpAd
             // 
-            this.btnSaoLuuAd.Caption = "Sao Lưu";
-            this.btnSaoLuuAd.Enabled = false;
-            this.btnSaoLuuAd.Id = 0;
-            this.btnSaoLuuAd.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Franksouza183_Fs_Places_folder_backup;
-            this.btnSaoLuuAd.Name = "btnSaoLuuAd";
-            this.btnSaoLuuAd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSaoLuuAd_ItemClick);
+            this.btnBackUpAd.Caption = "Sao Lưu";
+            this.btnBackUpAd.Enabled = false;
+            this.btnBackUpAd.Id = 0;
+            this.btnBackUpAd.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Franksouza183_Fs_Places_folder_backup;
+            this.btnBackUpAd.Name = "btnBackUpAd";
+            this.btnBackUpAd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnSaoLuuAd_ItemClick);
             // 
-            // btnPhucHoi
+            // btnRestore
             // 
-            this.btnPhucHoi.Caption = "Phục hồi";
-            this.btnPhucHoi.Enabled = false;
-            this.btnPhucHoi.Id = 1;
-            this.btnPhucHoi.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Custom_Icon_Design_Flatastic_9_Backup_restore;
-            this.btnPhucHoi.Name = "btnPhucHoi";
-            this.btnPhucHoi.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPhucHoi_ItemClick);
+            this.btnRestore.Caption = "Phục hồi";
+            this.btnRestore.Enabled = false;
+            this.btnRestore.Id = 1;
+            this.btnRestore.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Custom_Icon_Design_Flatastic_9_Backup_restore;
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnPhucHoi_ItemClick);
             // 
-            // btnThamsotime
+            // btnTimeParam
             // 
-            this.btnThamsotime.Caption = "Tham số theo thời gian";
-            this.btnThamsotime.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.BeforeText;
-            this.btnThamsotime.Enabled = false;
-            this.btnThamsotime.Id = 2;
-            this.btnThamsotime.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Aha_Soft_Large_Time_Time;
-            this.btnThamsotime.Name = "btnThamsotime";
-            this.btnThamsotime.CheckedChanged += new DevExpress.XtraBars.ItemClickEventHandler(this.btnThamsotime_CheckedChanged);
+            this.btnTimeParam.Caption = "Tham số theo thời gian";
+            this.btnTimeParam.CheckBoxVisibility = DevExpress.XtraBars.CheckBoxVisibility.BeforeText;
+            this.btnTimeParam.Enabled = false;
+            this.btnTimeParam.Id = 2;
+            this.btnTimeParam.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Aha_Soft_Large_Time_Time;
+            this.btnTimeParam.Name = "btnTimeParam";
+            this.btnTimeParam.CheckedChanged += new DevExpress.XtraBars.ItemClickEventHandler(this.btnThamsotime_CheckedChanged);
             // 
             // btnDevice
             // 
@@ -169,14 +151,14 @@
             this.btnDevice.Name = "btnDevice";
             this.btnDevice.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
-            // btnThoat
+            // btnExit
             // 
-            this.btnThoat.AllowAllUp = true;
-            this.btnThoat.Caption = "Thoát";
-            this.btnThoat.Id = 4;
-            this.btnThoat.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Custom_Icon_Design_Flatastic_1_Delete_1;
-            this.btnThoat.Name = "btnThoat";
-            this.btnThoat.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnThoat_ItemClick);
+            this.btnExit.AllowAllUp = true;
+            this.btnExit.Caption = "Thoát";
+            this.btnExit.Id = 4;
+            this.btnExit.ImageOptions.Image = global::Backup_Restore.Properties.Resources.Custom_Icon_Design_Flatastic_1_Delete_1;
+            this.btnExit.Name = "btnExit";
+            this.btnExit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnThoat_ItemClick);
             // 
             // bar3
             // 
@@ -293,45 +275,16 @@
             this.coldatabase_id.Name = "coldatabase_id";
             this.coldatabase_id.Width = 87;
             // 
-            // bdsDatabase
-            // 
-            this.bdsDatabase.DataMember = "databases";
-            this.bdsDatabase.DataSource = this.DS;
-            // 
-            // DS
-            // 
-            this.DS.DataSetName = "DS";
-            this.DS.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // databasesTableAdapter
-            // 
-            this.databasesTableAdapter.ClearBeforeFill = true;
-            // 
-            // tableAdapterManager
-            // 
-            this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
-            this.tableAdapterManager.Connection = null;
-            this.tableAdapterManager.UpdateOrder = Backup_Restore.DSTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
-            // 
-            // bdsBackup
-            // 
-            this.bdsBackup.DataMember = "DataTable1";
-            this.bdsBackup.DataSource = this.DS;
-            // 
-            // dataTable1TableAdapter
-            // 
-            this.dataTable1TableAdapter.ClearBeforeFill = true;
-            // 
             // fillToolStrip
             // 
             this.fillToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.fillToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dBNAMEToolStripLabel,
-            this.txtTenDB,
+            this.txtNameDB,
             this.fillToolStripButton,
-            this.txtSoLuongBackup,
+            this.txtCountBackup,
             this.lblDevice,
-            this.txtTenDevice});
+            this.txtNameDevice});
             this.fillToolStrip.Location = new System.Drawing.Point(300, 70);
             this.fillToolStrip.Name = "fillToolStrip";
             this.fillToolStrip.Size = new System.Drawing.Size(688, 27);
@@ -345,12 +298,12 @@
             this.dBNAMEToolStripLabel.Size = new System.Drawing.Size(78, 24);
             this.dBNAMEToolStripLabel.Text = "Tên CSDL :";
             // 
-            // txtTenDB
+            // txtNameDB
             // 
-            this.txtTenDB.Enabled = false;
-            this.txtTenDB.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtTenDB.Name = "txtTenDB";
-            this.txtTenDB.Size = new System.Drawing.Size(151, 27);
+            this.txtNameDB.Enabled = false;
+            this.txtNameDB.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtNameDB.Name = "txtNameDB";
+            this.txtNameDB.Size = new System.Drawing.Size(151, 27);
             // 
             // fillToolStripButton
             // 
@@ -360,12 +313,12 @@
             this.fillToolStripButton.Text = "Số lượng";
             this.fillToolStripButton.Click += new System.EventHandler(this.fillToolStripButton_Click);
             // 
-            // txtSoLuongBackup
+            // txtCountBackup
             // 
-            this.txtSoLuongBackup.Enabled = false;
-            this.txtSoLuongBackup.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtSoLuongBackup.Name = "txtSoLuongBackup";
-            this.txtSoLuongBackup.Size = new System.Drawing.Size(58, 27);
+            this.txtCountBackup.Enabled = false;
+            this.txtCountBackup.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtCountBackup.Name = "txtCountBackup";
+            this.txtCountBackup.Size = new System.Drawing.Size(58, 27);
             // 
             // lblDevice
             // 
@@ -373,16 +326,15 @@
             this.lblDevice.Size = new System.Drawing.Size(81, 24);
             this.lblDevice.Text = "Tên Device";
             // 
-            // txtTenDevice
+            // txtNameDevice
             // 
-            this.txtTenDevice.Enabled = false;
-            this.txtTenDevice.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtTenDevice.Name = "txtTenDevice";
-            this.txtTenDevice.Size = new System.Drawing.Size(186, 27);
+            this.txtNameDevice.Enabled = false;
+            this.txtNameDevice.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtNameDevice.Name = "txtNameDevice";
+            this.txtNameDevice.Size = new System.Drawing.Size(186, 27);
             // 
             // gcBackup
             // 
-            this.gcBackup.DataSource = this.bdsBackup;
             this.gcBackup.Dock = System.Windows.Forms.DockStyle.Top;
             this.gcBackup.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gcBackup.Location = new System.Drawing.Point(300, 97);
@@ -394,7 +346,6 @@
             this.gcBackup.TabIndex = 9;
             this.gcBackup.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grvBackup});
-            this.gcBackup.Click += new System.EventHandler(this.dataTable1GridControl_Click);
             // 
             // grvBackup
             // 
@@ -406,7 +357,6 @@
             this.grvBackup.DetailHeight = 431;
             this.grvBackup.GridControl = this.gcBackup;
             this.grvBackup.Name = "grvBackup";
-            this.grvBackup.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.grvBackup_RowClick);
             // 
             // colposition
             // 
@@ -467,15 +417,6 @@
             this.ckiNit.TabIndex = 24;
             this.ckiNit.Text = "Xóa tất cả các bản sao lưu trước đó";
             this.ckiNit.UseVisualStyleBackColor = true;
-            // 
-            // bdsBackup_device
-            // 
-            this.bdsBackup_device.DataMember = "backup_devices";
-            this.bdsBackup_device.DataSource = this.DS;
-            // 
-            // backup_devicesTableAdapter
-            // 
-            this.backup_devicesTableAdapter.ClearBeforeFill = true;
             // 
             // Prg
             // 
@@ -540,17 +481,16 @@
             this.dtpDate.TabIndex = 60;
             this.dtpDate.Visible = false;
             // 
-            // txtInfoPhucHoi
+            // txtInfoRestore
             // 
-            this.txtInfoPhucHoi.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtInfoPhucHoi.Location = new System.Drawing.Point(344, 571);
-            this.txtInfoPhucHoi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtInfoPhucHoi.Multiline = true;
-            this.txtInfoPhucHoi.Name = "txtInfoPhucHoi";
-            this.txtInfoPhucHoi.Size = new System.Drawing.Size(572, 116);
-            this.txtInfoPhucHoi.TabIndex = 62;
-            this.txtInfoPhucHoi.Text = resources.GetString("txtInfoPhucHoi.Text");
-            this.txtInfoPhucHoi.Visible = false;
+            this.txtInfoRestore.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInfoRestore.Location = new System.Drawing.Point(344, 571);
+            this.txtInfoRestore.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtInfoRestore.Multiline = true;
+            this.txtInfoRestore.Name = "txtInfoRestore";
+            this.txtInfoRestore.Size = new System.Drawing.Size(572, 116);
+            this.txtInfoRestore.TabIndex = 62;
+            this.txtInfoRestore.Visible = false;
             // 
             // dtptTimeStop
             // 
@@ -571,7 +511,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(988, 823);
             this.Controls.Add(this.dtptTimeStop);
-            this.Controls.Add(this.txtInfoPhucHoi);
+            this.Controls.Add(this.txtInfoRestore);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.lblinfo);
             this.Controls.Add(this.PrgLoad);
@@ -596,14 +536,10 @@
             this.pnelCSDL.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gcDatabase)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvDatabase)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsDatabase)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DS)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsBackup)).EndInit();
             this.fillToolStrip.ResumeLayout(false);
             this.fillToolStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcBackup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grvBackup)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bdsBackup_device)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Prg.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.marqueeProgressBarControl1.Properties)).EndInit();
             this.ResumeLayout(false);
@@ -620,45 +556,43 @@
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private DevExpress.XtraBars.BarButtonItem btnSaoLuuAd;
-        private DevExpress.XtraBars.BarButtonItem btnPhucHoi;
-        private DevExpress.XtraBars.BarCheckItem btnThamsotime;
+        private DevExpress.XtraBars.BarButtonItem btnBackUpAd;
+        private DevExpress.XtraBars.BarButtonItem btnRestore;
+        private DevExpress.XtraBars.BarCheckItem btnTimeParam;
         private DevExpress.XtraBars.BarButtonItem btnDevice;
-        private DevExpress.XtraBars.BarButtonItem btnThoat;
+        private DevExpress.XtraBars.BarButtonItem btnExit;
    
         private System.Windows.Forms.Panel pnelCSDL;
         private DevExpress.XtraBars.BarButtonItem btnsao;
-        private System.Windows.Forms.BindingSource bdsDatabase;
-        private DS DS;
-        private DSTableAdapters.databasesTableAdapter databasesTableAdapter;
-        private DSTableAdapters.TableAdapterManager tableAdapterManager;
+       
+        //private DS DS;
+        //private DSTableAdapters.databasesTableAdapter databasesTableAdapter;
+        //private DSTableAdapters.TableAdapterManager tableAdapterManager;
         private DevExpress.XtraGrid.GridControl gcDatabase;
         private DevExpress.XtraGrid.Views.Grid.GridView grvDatabase;
         private DevExpress.XtraGrid.Columns.GridColumn colname;
         private DevExpress.XtraGrid.Columns.GridColumn coldatabase_id;
         private System.Windows.Forms.ToolStrip fillToolStrip;
         private System.Windows.Forms.ToolStripLabel dBNAMEToolStripLabel;
-        private System.Windows.Forms.ToolStripTextBox txtTenDB;
+        private System.Windows.Forms.ToolStripTextBox txtNameDB;
         private System.Windows.Forms.ToolStripButton fillToolStripButton;
-        private System.Windows.Forms.BindingSource bdsBackup;
-        private DSTableAdapters.DataTable1TableAdapter dataTable1TableAdapter;
+       
+        //private DSTableAdapters.DataTable1TableAdapter dataTable1TableAdapter;
         private DevExpress.XtraGrid.GridControl gcBackup;
         private DevExpress.XtraGrid.Views.Grid.GridView grvBackup;
         private DevExpress.XtraGrid.Columns.GridColumn colposition;
         private DevExpress.XtraGrid.Columns.GridColumn colname1;
         private DevExpress.XtraGrid.Columns.GridColumn colbackup_start_date;
         private DevExpress.XtraGrid.Columns.GridColumn coluser_name;
-        private System.Windows.Forms.ToolStripTextBox txtSoLuongBackup;
+        private System.Windows.Forms.ToolStripTextBox txtCountBackup;
         private System.Windows.Forms.CheckBox ckiNit;
-        private System.Windows.Forms.BindingSource bdsBackup_device;
-        private DSTableAdapters.backup_devicesTableAdapter backup_devicesTableAdapter;
+        //private DSTableAdapters.backup_devicesTableAdapter backup_devicesTableAdapter;
         private System.Windows.Forms.ToolStripLabel lblDevice;
-        private System.Windows.Forms.ToolStripTextBox txtTenDevice;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.ToolStripTextBox txtNameDevice;
         private DevExpress.XtraEditors.MarqueeProgressBarControl Prg;
         private DevExpress.XtraEditors.ColorEdit marqueeProgressBarControl1;
         private System.Windows.Forms.ProgressBar PrgLoad;
-        private System.Windows.Forms.TextBox txtInfoPhucHoi;
+        private System.Windows.Forms.TextBox txtInfoRestore;
         private System.Windows.Forms.DateTimePicker dtpDate;
         private System.Windows.Forms.Label lblinfo;
         private System.Windows.Forms.DateTimePicker dtptTimeStop;

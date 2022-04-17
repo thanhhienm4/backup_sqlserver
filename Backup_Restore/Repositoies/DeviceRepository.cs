@@ -36,16 +36,16 @@ namespace Backup_Restore.Repositoies
             {
                 using (SqlConnection conn = new SqlConnection(Program.connStr))
                 {
-                    string command = string.Format($"EXEC sp_addumpdevice '{type}', '{name}', '{file}' ;");
-                    int res = conn.Execute(command);
-                    return res;
+                    string command = string.Format($"SET NOCOUNT OFF; EXEC sp_addumpdevice '{type}', '{name}', '{file}' ;");
+                    conn.Execute(command);
+                    return 1;
                 }
 
             }
             catch (Exception ex)
             {
                 HandleException.Exec(ex);
-                throw (ex);
+                return 0;
             }
         }
     }

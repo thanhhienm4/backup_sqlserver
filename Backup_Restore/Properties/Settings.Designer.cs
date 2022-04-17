@@ -25,11 +25,10 @@ namespace Backup_Restore.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-BF2DUJ5\\VU_2;Initial Catalog=tempdb;Integrated Security=True")]
-        public string tempdbConnectionString {
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Application\\SQLSERVER\\MSSQL15.MSSQLSERVER\\MSSQL\\Backup")]
+        public string path {
             get {
-                return ((string)(this["tempdbConnectionString"]));
+                return ((string)(this["path"]));
             }
         }
     }

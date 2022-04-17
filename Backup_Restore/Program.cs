@@ -25,7 +25,6 @@ namespace Backup_Restore
         public static string connStr = "";
         // public static SqlConnection connection;
         //Connection biến dùng kết nối về db 
-        public static SqlDataReader myreader;
         public static String serverName = "";
         public static String username = "";
         public static String passWord = "";
@@ -34,8 +33,7 @@ namespace Backup_Restore
         public static String mlogin = "";
         public static int namBatDau = 2016;
         public static int flagRestore = 0;
-        public static String strDefaultPath = "D:/Nam_4_Ki_2/Chuyen_De_CNPM/Backup/Backup_Restore/";
-        public static String strDefaultPathNew = "";
+        public static String strDefaultPath;
         public static String device_type = "Disk";
         [STAThread]
         public static int KetNoi() //null thì lỗi, không null thì chạy
