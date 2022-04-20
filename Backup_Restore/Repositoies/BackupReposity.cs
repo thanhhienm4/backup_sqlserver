@@ -70,8 +70,8 @@ namespace Backup_Restore.Repositoies
                 using (SqlConnection conn = new SqlConnection(Program.connStr))
                 {
                     string command = $"ALTER DATABASE {nameDatabase} SET SINGLE_USER WITH ROLLBACK IMMEDIATE " +
-                        $"RESTORE DATABASE {nameDatabase} FROM {device} WITH FILE= {pos} , " + 
-                        $" REPLACE  ALTER DATABASE  {nameDatabase} SET MULTI_USER";
+                        $" RESTORE DATABASE {nameDatabase} FROM {device} WITH FILE= {pos} , " + 
+                        $" REPLACE ALTER DATABASE  {nameDatabase} SET MULTI_USER ";
                     conn.Execute(command);
                     return 1;
                 }
@@ -95,7 +95,7 @@ namespace Backup_Restore.Repositoies
                         $"BACKUP LOG {nameDatabase} TO DISK = '{strFullPathBackLog}'  WITH INIT " +
                         $"RESTORE DATABASE {nameDatabase} FROM {device}  WITH NORECOVERY , " +
                         $"REPLACE " +
-                        $"RESTORE DATABASE Blog FROM DISK = '{strFullPathBackLog}' WITH STOPAT = '{dateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                        $"RESTORE DATABASE {nameDatabase} FROM DISK = '{strFullPathBackLog}' WITH STOPAT = '{dateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
                         $"  REPLACE " +
                         $"ALTER DATABASE  {nameDatabase} SET MULTI_USER ";
 
