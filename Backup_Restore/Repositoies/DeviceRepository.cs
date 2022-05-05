@@ -36,7 +36,7 @@ namespace Backup_Restore.Repositoies
             {
                 using (SqlConnection conn = new SqlConnection(Program.connStr))
                 {
-                    string command = string.Format($"SET NOCOUNT OFF; EXEC sp_addumpdevice '{type}', '{name}', '{file}' ;");
+                    string command = string.Format($" EXEC sp_addumpdevice '{type}', '{name}', '{file}' ;");
                     conn.Execute(command);
                     return 1;
                 }

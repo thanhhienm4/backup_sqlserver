@@ -87,7 +87,7 @@ namespace Backup_Restore
         private void createDevice(string nameDevice, string path)
         {
             nameDevice = "DEVICE_" + Program.Db;
-            strFullPathDevice = path + nameDevice + ".BAK";
+            strFullPathDevice = Path.Combine(path, nameDevice + ".BAK");
            
             try
             {
@@ -151,7 +151,7 @@ namespace Backup_Restore
         private void LoadBackup()
         {
             if (Program.Db.Trim() == "") return;
-            var backups = backupReposity.GetBackupByName(Program.Db);
+            var backups = backupReposity.GetBackupByName(Program.Db,"D");
             gcBackup.DataSource = backups;
             txtCountBackup.Text = backups.Count.ToString();
             grvBackup.FocusInvalidRow();
@@ -163,7 +163,7 @@ namespace Backup_Restore
             
             txtNameDB.Text = Program.Db;
             nameDevice = "DEVICE_" + Program.Db;
-            strFullPathDevice = Program.strDefaultPath + nameDevice + ".BAK";
+            strFullPathDevice = Path.Combine(Program.strDefaultPath , nameDevice + ".BAK");
             DeviceModel device = deviceRepository.GetDevices().Find(x => x.Name == nameDevice);
            // MessageBox.Show(" check device" + checkTrungDevice,"", MessageBoxButtons.OK);
             if (device == null)
@@ -201,8 +201,8 @@ namespace Backup_Restore
 
             try
             {
-
-                int res = backupReposity.CreateBackup(Program.Db, nameDevice, "FULL backup", isInit);
+                string strFullPathBackLog = Path.Combine(Program.strDefaultPath, Program.Db + ".TRN");
+                int res = backupReposity.CreateBackup(Program.Db, nameDevice, "FULL backup", isInit, strFullPathBackLog);
 
                 if (res > 0)
                 {                   
@@ -223,7 +223,35 @@ namespace Backup_Restore
         private void btnPhucHoi_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             int res;
-            int err = 0;
+
+            if(btnTimeParam.Checked)
+            {
+                DateTime timeEnd = dtpDate.Value.Date + dtptTimeStop.Value.TimeOfDay;
+                BackupModel bestBackup = ((List<BackupModel>)grvBackup.DataSource).OrderBy(x => x.Backup_Start_Date).FirstOrDefault();
+               
+                foreach(var backup in (List<BackupModel>)grvBackup.DataSource)
+                {
+                    if (backup.Backup_Start_Date <= timeEnd && backup.Backup_Start_Date > bestBackup.Backup_Start_Date)
+                        bestBackup = backup;
+                }
+
+                if(bestBackup.Backup_Start_Date >= timeEnd)
+                {
+                    MessageBox.Show("Chưa có bản sao lưu nào phục hồi được đến thời điểm " + timeEnd.ToString("yyyy-MM-dd HH:mm:ss"), "!", MessageBoxButtons.OK);
+                    return;
+                }
+
+                DialogResult dr = MessageBox.Show("Dữ liệu sẽ được sao lưu tại thời điểm " + timeEnd.ToString("yyyy-MM-dd HH:mm:ss")
+                    + $" Dữ liệu được backup bằng bản sao lưu số {bestBackup.Position}", "!", MessageBoxButtons.OKCancel);
+                if (dr==DialogResult.OK)
+                {
+                    RestoreWithTime(timeEnd, bestBackup.Position);
+                   
+                }
+                return;
+
+
+            }    
             
             if (grvBackup.DataRowCount == 0)
             {
@@ -238,65 +266,21 @@ namespace Backup_Restore
           
          
             int pos = ((BackupModel)grvBackup.GetRow(grvBackup.FocusedRowHandle)).Position;
-            if (btnTimeParam.Checked == false)
+            res = backupReposity.RetoreBackup(Program.Db, nameDevice, pos);
+            if (res >= 0)
             {
-
-                res = backupReposity.RetoreBackup(Program.Db, nameDevice, pos);
-                if (res >= 0)
-                {                 
-                    MessageBox.Show(" Phục hồi thành công!", "", MessageBoxButtons.OK);
-                }
-            }
-            else
+                MessageBox.Show(" Phục hồi thành công!", "", MessageBoxButtons.OK);
+            }else
             {
-                DateTime ngaygioBK = ((BackupModel)grvBackup.GetRow(grvBackup.FocusedRowHandle)).Backup_Start_Date;
-                DateTime dateStop = dtpDate.Value.Date + dtptTimeStop.Value.TimeOfDay;
-                String dt = dtpDate.Value.ToString("yyyy-MM-dd") + " " + dtptTimeStop.Value.ToString("HH:mm:ss");
-                if ((dtpDate.Value.Date < ngaygioBK.Date) || (dtpDate.Value.Date == ngaygioBK.Date && dtptTimeStop.Value.Ticks < ngaygioBK.TimeOfDay.Ticks))
-                {
-                    MessageBox.Show(" Thời điểm muốn phục hồi phải sau thời điểm sao lưu đã chọn", "", MessageBoxButtons.OK);
-                    return;
-
-                }
-                if (DateTime.Now < dateStop)
-                {
-                    MessageBox.Show(" Thời điểm muốn phục hồi phải trước thời điểm hiện tại", "", MessageBoxButtons.OK);
-                    return;
-                }
-                else
-                {
-                    if (Directory.Exists(Program.strDefaultPath) == true)
-                    {
-                        RestoreWithTime(dateStop);
-                    }
-                    else
-                    {
-                  
-                        FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
-                        if (folderBrowser.ShowDialog() == DialogResult.OK)
-                        {
-                            Program.strDefaultPath = folderBrowser.SelectedPath ;
-                            
-                            Properties.Settings.Default["path"] = Program.strDefaultPath;
-                            Properties.Settings.Default.Save();
-                            String strFullPathBackLog = Program.strDefaultPath  + "\\"+ Program.Db + ".TRN";
-                            RestoreWithTime(dateStop);
-                        }
-
-                        else
-                        {
-                            return;
-                        }
-                    }
-                }
-            }
+                MessageBox.Show(" Phục hồi thất bại!", "!", MessageBoxButtons.OK);
+            }    
         }
 
         
-        public void RestoreWithTime(DateTime dateStop)
+        public void RestoreWithTime(DateTime dateStop,int pos)
         {
-            String strFullPathBackLog = Program.strDefaultPath + Program.Db + ".TRN";
-            int res = backupReposity.RetoreBackupToTime(Program.Db, nameDevice, strFullPathBackLog, dateStop);
+            string strFullPathBackLog = Path.Combine(Program.strDefaultPath, Program.Db + ".TRN");
+            int res = backupReposity.RetoreBackupToTime(Program.Db, nameDevice, strFullPathBackLog, dateStop, pos);
 
             if (res >= 0)
             {

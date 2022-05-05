@@ -25,7 +25,7 @@ namespace Backup_Restore.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Application\\SQLSERVER\\MSSQL15.MSSQLSERVER\\MSSQL\\Backup")]
+        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Application\\SQLSERVER\\MSSQL15.MSSQLSERVER\\MSSQL\\Backup\\")]
         public string path {
             get {
                 return ((string)(this["path"]));

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">E:\Application\SQLSERVER\MSSQL15.MSSQLSERVER\MSSQL\Backup</Value>
+      <Value Profile="(Default)">E:\Application\SQLSERVER\MSSQL15.MSSQLSERVER\MSSQL\Backup\</Value>
     </Setting>
   </Settings>
 </SettingsFile>
